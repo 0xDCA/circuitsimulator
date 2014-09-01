@@ -1,0 +1,52 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package gateviews;
+
+import circuit.CircuitElement;
+import gates.ConstantGate;
+import gates.IGate;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import utils.GraphicsUtils;
+import view.ConstantGateEditor;
+
+/**
+ *
+ * @author Daniel
+ */
+public class ConstantGateView extends AbstractCircuitElementView {
+    private static final int SquareSize = 50;
+    
+    @Override
+    public IGate createInitialGate() {
+        return new ConstantGate();
+    }
+
+    @Override
+    public void drawCircuitElement(Graphics g, Rectangle bounds, CircuitElement element) {
+        ConstantGate gate = (ConstantGate)element.getGate();
+        Graphics graphics = g.create();
+        
+        int x = (2 *bounds.x + bounds.width - SquareSize) / 2,
+            y = (2 * bounds.y + bounds.height - SquareSize) / 2;
+        
+        graphics.setColor(Color.WHITE);
+        graphics.fillRect(x, y, SquareSize, SquareSize);
+        
+        graphics.setColor(Color.BLACK);
+        graphics.drawRect(x, y, SquareSize, SquareSize);
+        
+        GraphicsUtils.drawCenteredString(g, gate.value ? "1" : "0", 
+                bounds);
+    }
+
+    @Override
+    public void editCircuitElement(CircuitElement element) {
+        new ConstantGateEditor(element).setVisible(true);
+    }
+}
